@@ -267,6 +267,6 @@ function createAuthOverlay() {
 
   // Add event listener to login button
   document.getElementById("loginBtn").addEventListener("click", function () {
-    window.location.href = "/views/authentication.html";
+    window.location.href = "authentication.html";
   });
 }

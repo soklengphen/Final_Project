@@ -27,7 +27,7 @@ function handleLogout() {
         
         // Redirect to login page after a brief delay
         setTimeout(() => {
-            window.location.href = '/src/authentication.html';
+            window.location.href = 'authentication.html';
         }, 1500);
     }
 }
