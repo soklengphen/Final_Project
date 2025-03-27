@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SETEC STOCK - Dashboard</title>
+    <link
+      rel="icon"
+      href="/assets/image-removebg-preview.png"
+      type="image/png"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .sidebar {
+        background: #1b2531;
+        min-height: 100vh;
+        width: 260px;
+        color: #a9b7d0;
+      }
+
+      .nav-link {
+        color: #a9b7d0 !important;
+        padding: 12px 15px;
+        position: relative;
+        display: flex;
+        align-items: start;
+        gap: 10px;
+      }
+
+      .nav-link:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff !important;
+      }
+
+      .nav-link.active {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff !important;
+      }
+
+      .nav-link .badge {
+        position: absolute;
+        right: 15px;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+      }
+
+      .submenu {
+        padding-left: 20px;
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      .submenu .nav-link {
+        font-size: 14px;
+        padding: 8px 15px;
+      }
+
+      .nav-link[data-bs-toggle="collapse"]::after {
+        content: "\f105";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        right: 15px;
+        transition: transform 0.3s;
+      }
+      .card canvas {
+        max-height: 50px;
+      }
+
+      .nav-link[data-bs-toggle="collapse"][aria-expanded="true"]::after {
+        transform: rotate(90deg);
+      }
+
+      .logo {
+        padding: 20px;
+        font-size: 24px;
+        color: white;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8f9fa;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .search-bar {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        padding: 8px 12px;
+        border-radius: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        width: 250px;
+      }
+
+      .search-bar input {
+        border: none;
+        outline: none;
+        width: 100%;
+        padding-left: 8px;
+      }
+
+      .icon-group {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .icon {
+        position: relative;
+        font-size: 20px;
+        color: #555;
+        cursor: pointer;
+      }
+
+      .icon .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: red;
+        color: white;
+        font-size: 12px;
+        padding: 2px 6px;
+        border-radius: 50%;
+      }
+
+      .profile img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 bg-dark text-white min-vh-100 p-0">
+          <!-- logo -->
+          <div class="p-3 d-flex align-items-center gap-2 justify-content-center">
+            <img
+              src="/assets/image-removebg-preview.png"
+              alt="setec logo"
+              width="32"
+              height="32"
+            />
+            <h4 class="text-start">SETEC STOCK</h4>
+          </div>
+
+          <ul class="nav flex-column">
+            <!-- Dashboard -->
+            <li class="nav-item">
+              <a class="nav-link active d-flex align-items-center" >
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+              </a>
+            </li>
+
+            <!-- Product -->
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-bs-toggle="collapse"
+                href="#productSubmenu"
+                aria-expanded="true"
+              >
+                <i class="fas fa-box me-2"></i> Products
+              </a>
+              <div class="collapse show" id="productSubmenu">
+                <ul class="nav flex-column submenu">
+                  <li class="nav-item p-2">
+                    <a class="nav-link" href="#">
+                      <i class="fa-solid fa-plus"></i> Add Products</a
+                    >
+                  </li>
+                  <li class="nav-item nav-item p-2">
+                    <a class="nav-link" href="#">
+                      <i class="fa-solid fa-list"></i>List Products</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- Categories -->
+            <li class="nav-item">
+              <a
+                class="nav-link none"
+                data-bs-toggle="collapse"
+                href="#categoriesSubmenu"
+                aria-expanded="true"
+              >
+                <i class="fa-solid fa-box-archive"></i> Categories
+              </a>
+              <div class="collapse show" id="categoriesSubmenu">
+                <ul class="nav flex-column submenu">
+                  <li class="nav-item p-2">
+                    <a class="nav-link" href="#">
+                      <i class="fa-solid fa-plus"></i> Add Catgories</a
+                    >
+                  </li>
+                  <li class="nav-item nav-item p-2">
+                    <a class="nav-link" href="#">
+                      <i class="fa-solid fa-list"></i>List Categories</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- Order -->
+            <li class="nav-item">
+              <a class="nav-link">
+                <i class="fas fa-shopping-cart me-2"></i> Orders
+              </a>
+            </li>
+
+            <!-- Users -->
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">
+                <i class="fas fa-users me-2"></i> Users
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">
+                <i class="fas fa-cog me-2"></i> Settings
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10 pt-4 gap-4">
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 mx-auto"
+          >
+            <h2 class="">Dashboard</h2>
+            <div class="d-flex align-items-center justify-content-center gap-4">
+              <!-- Search Bar -->
+              <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search here..." />
+              </div>
+              <!-- Icons & Profile -->
+              <div class="d-flex align-items-center gap-4 justify-content-center">
+                <div class="icon">
+                  <i class="fas fa-bell"></i>
+                  <span class="badge">3</span>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-envelope"></i>
+                  <span class="badge">5</span>
+                </div>
+              
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <div class="profile">
+                    <img src="/assets/avatar.jpg" alt="User Profile" />
+                </div>
+                <button id="logoutBtn" class="btn btn-outline-danger btn-sm">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+              
+            </div>
+          </div>
+
+          <!-- Statistics Cards -->
+          <div class="row mb-4 mx-auto">
+            <div class="col-md-3">
+              <div class="card text-start p-3 shadow-sm">
+                <h6 class="text-secondary">Products</h6>
+                <h4 class="fw-bold">150</h4>
+                <div class="text-success">▲ 4.87%</div>
+                <canvas id="chart1"></canvas>
+                <a
+                  href="#"
+                  class="d-flex flex-row justify-content-end align-items-center gap-2 text-decoration-none pt-4"
+                  >More info <i class="fas fa-arrow-circle-right"></i
+                ></a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-start p-3 shadow-sm">
+                <h6>Categories</h6>
+                <h4 class="fw-bold">200</h4>
+                <div class="text-success">▲ 3.27%</div>
+                <canvas id="chart2"></canvas>
+                <a href="#" class="d-flex flex-row justify-content-end align-items-center gap-2 text-decoration-none pt-4 "
+                  >More info <i class="fas fa-arrow-circle-right "></i
+                ></a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-start p-3 shadow-sm">
+                <h6>Orders</h6>
+                <h4 class="fw-bold">75</h4>
+                <div class="text-danger">▼ 5.38%</div>
+                <canvas id="chart3"></canvas>
+                <a href="#" class="d-flex flex-row justify-content-end align-items-center gap-2 text-decoration-none pt-4 "
+                  >More info <i class="fas fa-arrow-circle-right "></i
+                ></a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card text-start p-3 shadow-sm">
+                <h6>Users</h6>
+                <h4 class="fw-bold">120</h4>
+                <div class="text-success">▲ 11.37%</div>
+                <canvas id="chart4"></canvas>
+                <a href="#" class="d-flex flex-row justify-content-end align-items-center gap-2 text-decoration-none pt-4 "
+                  >More info <i class="fas fa-arrow-circle-right "></i
+                ></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Product Form -->
+          <div class="card mb-4">
+            <div class="card-header card-insert">
+              <h4>Add Product</h4>
+            </div>
+            <div class="card-body">
+              <form class="formProduct">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Product Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter product name"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Price</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Enter product price"
+                    />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Quantity</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Enter product quantity"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Category</label>
+                    <select class="form-select">
+                      <option selected>Beer</option>
+                      <option>Wine</option>
+                      <option>Spirits</option>
+                      <option>Soft Drinks</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    placeholder="Enter product description"
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">
+                  Add Product
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Product List -->
+          <div class="card">
+            <div class="card-header">
+              <h4>Product List</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-striped productTable">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Product Name</th>
+                      <th>Category</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                        <button class="btn btn-sm btn-primary">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const createChart = (id, type, color) => {
+        const ctx = document.getElementById(id).getContext("2d");
+        new Chart(ctx, {
+          type: type,
+          data: {
+            labels: ["M", "T", "W", "T", "F", "S", "S"],
+            datasets: [
+              {
+                data: [5, 8, 6, 9, 7, 8, 6],
+                backgroundColor: color,
+                borderRadius: 5,
+              },
+            ],
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { x: { display: false }, y: { display: false } },
+          },
+        });
+      };
+
+      createChart("chart1", "bar", "#6c63ff");
+      createChart("chart2", "line", "#36b37e");
+      createChart("chart3", "line", "#36b37e");
+      createChart("chart4", "bar", "#6c63ff");
+    </script>
+    <script src="/src/js/logout.js"></script>
+
+    <script src="/src/js/product.js"></script>
+  </body>
+</html>
