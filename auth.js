@@ -108,7 +108,7 @@ function isValidEmail(email) {
 }
 
 function redirectToDashboard() {
-    window.location.href = '/dashboard.html';
+    window.location.href = '/index.html';
 }
 
 // Message Display Functions
